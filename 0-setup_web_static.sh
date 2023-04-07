@@ -32,10 +32,8 @@ server {
 #start with installing nginx( if it's not already installed)
 if ! [[ "$(which nginx)" ]]; then
     #install nginx
-    sudo apt-get update
+    sudo apt-get -y update
     sudo apt-get -y install nginx
-else
-    echo "We have nginx, Good to go mate!"
 fi
 
 #creating folders if they dont exist
