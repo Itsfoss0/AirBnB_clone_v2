@@ -14,7 +14,7 @@ HTML_CONTENT=\
 NGINX_CONFIG=\
 "
 server {
-	add_header X-Served-By $hostname;
+	add_header X-Served-By \$hostname;
  	listen	80;
 
  	root 	/var/www/html/; 
@@ -40,32 +40,16 @@ fi
 
 #creating folders if they dont exist
 function create_folders(){
-    if ! [[ -d "/data/" ]]; then
-        sudo mkdir /data/
-    fi
-
-    if ! [[ -d "/data/web_static/" ]]; then
-        sudo mkdir -p /data/web_static/
-    fi
-
-    if ! [[ -d "/data/web_static/releases/" ]]; then
-        sudo mkdir -p /data/web_static/releases/
-    fi
-
-    if ! [[ -d "/data/web_static/shared/" ]]; then
-        sudo mkdir -p /data/web_static/shared/
-    fi
-
     if ! [[ -d "/data/web_static/releases/test/" ]]; then
-        sudo mkdir -p /data/web_static/releases/test/
+        mkdir -p /data/web_static/releases/test/ /data/web_static/shared/
     fi
-
-    sudo chown -R "ubuntu":"ubuntu" /data/
+    chown -R ubuntu:ubuntu /data/
 }
+
 #creating fake HTML files
 function create_fake_html(){
     if ! [[ -s "/data/web_static/releases/test/index.html" ]]; then
-        sudo echo -e "$HTML_CONTENT" > /data/web_static/releases/test/index.html
+        echo -e "$HTML_CONTENT" > /data/web_static/releases/test/index.html
     fi
 }
 
