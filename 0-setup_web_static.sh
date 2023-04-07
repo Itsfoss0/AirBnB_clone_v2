@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+#set things up for deployment
+HTML_CONTENT=\
+"
+<html>
+    <head>
+        <title>A dumy page </title>
+    </head>
+    <body>
+        Hi Human, good to see you here
+    </body>
+</html>
+"
+NGINX_CONFIG=\
+"
+server {
+	add_header X-Served-By $hostname;
+ 	listen	80;
+
+ 	root 	/var/www/html/; 
+	location / {
+  		alias	/var/www/html/;
+		index	index.nginx-debian.html; 
+	}
+	location /hbnb_static {
+		 alias /data/web_static/current/;
+		 index index.html;
+	}
+}	
+
+"
+#start with installing nginx( if it's not already installed)
+if ! [[ "$(which nginx)" ]]; then
+    #install nginx
+    sudo apt-get update
+    sudo apt-get -y install nginx
+else
+    echo "We have nginx, Good to go mate!"
+fi
+
+#creating folders if they dont exist
+function create_folders(){
+    if ! [[ -d "/data/" ]]; then
+        sudo mkdir /data/
+    fi
+
+    if ! [[ -d "/data/web_static/" ]]; then
+        sudo mkdir -p /data/web_static/
+    fi
+
+    if ! [[ -d "/data/web_static/releases/" ]]; then
+        sudo mkdir -p /data/web_static/releases/
+    fi
+
+    if ! [[ -d "/data/web_static/shared/" ]]; then
+        sudo mkdir -p /data/web_static/shared/
+    fi
+
+    if ! [[ -d "/data/web_static/releases/test/" ]]; then
+        sudo mkdir -p /data/web_static/releases/test/
+    fi
+
+    sudo chown -R "$USER":"$USER" /data/
+}
+#creating fake HTML files
+function create_fake_html(){
+    if ! [[ -s "/data/web_static/releases/test/index.html" ]]; then
+        sudo echo -e "$HTML_CONTENT" > /data/web_static/releases/test/index.html
+    fi
+}
+
+#creating a symlink ( if it doen't already exist)
+function create_symlink(){
+    if [[ -L "/data/web_static/current" ]]; then
+        sudo rm /data/web_static/current
+        sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+    else
+        sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+    fi
+}
+
+#configure nginx
+function configure_nginx(){
+echo  -e "$NGINX_CONFIG" > /etc/nginx/sites-available/default
+}
+
+function restart_nginx() {
+    if [[ "$(pgrep nginx)" ]]; then
+        sudo service nginx restart
+    else
+        sudo service nginx start
+    fi
+}
+
+create_folders;
+create_fake_html;
+create_symlink;
+restart_nginx;
