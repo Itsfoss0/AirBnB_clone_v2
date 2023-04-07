@@ -60,7 +60,7 @@ function create_folders(){
         sudo mkdir -p /data/web_static/releases/test/
     fi
 
-    sudo chown -R "$USER":"$USER" /data/
+    sudo chown -R "ubuntu":"ubuntu" /data/
 }
 #creating fake HTML files
 function create_fake_html(){
