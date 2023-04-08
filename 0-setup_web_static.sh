@@ -53,7 +53,8 @@ function create_fake_html(){
 
 #creating a symlink ( if it doen't already exist)
 function create_symlink(){
-    if ! [[ -L /data/web_static/current]]; then
+    if [[ -L /data/web_static/current]]; then
+        rm -f /data/web_static/current
         sudo ln -sf /data/web_static/releases/test /data/web_static/current
     fi
 }
