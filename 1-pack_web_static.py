@@ -23,6 +23,6 @@ def do_pack() -> None:
     local('mkdir -p versions/')
     create = local('tar -cvzf versions/{} web_static'.format(arch_name))
     if create is not None:
-        return archive
+        return arch_name
     else:
         return None
