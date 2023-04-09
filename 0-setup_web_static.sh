@@ -24,10 +24,11 @@ server {
 if ! [[ "$(which nginx)" ]]; then
     sudo apt-get -y update
     sudo apt-get install nginx
+fi
 
 if ! [[ -d /data/web_static/releases/test/ ]]; then
     sudo mkdir -p /data/web_static/releases/test/
-
+fi
 sudo chown -R ubuntu:ubuntu /data/
 
 echo -e "$HTML_CONTENT" > /data/web_static/releases/test/index.html
