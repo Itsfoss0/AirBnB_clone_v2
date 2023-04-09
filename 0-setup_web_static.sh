@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 #set things up for deployment
 
-MY_HTML=\
-"
-<html>
-    <head>
-        <title>DevOps is Fun </title>
-    </head>
-    <body>
-        <h2> Getting started with DevOps </h2>
-    </body>
-</html>
-"
 if [ ! -x /usr/sbin/nginx ]; then
 	sudo apt-get update -y -qq && \
 	    sudo apt-get install -y nginx
