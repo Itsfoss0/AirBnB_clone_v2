@@ -7,6 +7,7 @@ Usage: ./1-pack_web_static.py do_pack
 """
 
 from fabfile.api import local
+from datetime import datetime
 
 
 def do_pack() -> None:
