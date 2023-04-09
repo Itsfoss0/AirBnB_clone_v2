@@ -21,7 +21,10 @@ server {
 	}
 }	
 "
-sudo apt-get -y update && sudo apt-get -y install nginx 
+if ! [[ "$(which nginx)" ]]; then
+    sudo apt-get -y update && sudo apt-get -y install nginx
+fi
+
 sudo mkdir -p /data/web_static/releases/test /data/web_static/shared/
 
 echo -e "$HTML_CONTENT" > /data/web_static/releases/test/index.html
