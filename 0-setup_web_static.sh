@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 #set things up for deployment
 
+MY_HTML=\
+"
+<html>
+    <head>
+        <title>DevOps is Fun </title>
+    </head>
+    <body>
+        <h2> Getting started with DevOps </h2>
+    </body>
+</html>
+"
 if [ ! -x /usr/sbin/nginx ]; then
 	sudo apt-get update -y -qq && \
 	    sudo apt-get install -y nginx
@@ -11,7 +22,7 @@ fi
 sudo mkdir -p /data/web_static/releases/test  /data/web_static/shared/
 
 
-echo "<h1> I couldn't center a div </h1>" | sudo dd status=none of=/data/web_static/releases/test/index.html
+echo -e "$MY_HTML" | sudo dd status=none of=/data/web_static/releases/test/index.html
 
 # create sym link
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
