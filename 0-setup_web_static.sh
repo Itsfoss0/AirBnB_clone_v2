@@ -22,7 +22,7 @@ fi
 sudo mkdir -p /data/web_static/releases/test  /data/web_static/shared/
 
 
-echo -e "$MY_HTML" | sudo dd status=none of=/data/web_static/releases/test/index.html
+echo -e "$MY_HTML" > /data/web_static/releases/test/index.html
 
 # create sym link
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
