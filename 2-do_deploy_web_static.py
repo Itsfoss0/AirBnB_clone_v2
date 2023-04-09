@@ -5,10 +5,11 @@ Deploy the to a remote server
 Usage: ./2_do_deploy_web_static.py do_deploy
 """
 
-from fabric.api import env, task, put, run
+from fabric.api import env, task, put, run, sudo
 from os import path
 
 env.hosts = ['54.146.84.110', '100.26.156.138']
+env.user = 'ubuntu'
 
 
 @task(alias="deploy")
@@ -24,27 +25,17 @@ def do_deploy(archive_path) -> bool:
     if not path.exists(archive_path):
         return False
     try:
+        
+        archive = archive_path.split("/")[1].strip(".tgz")
+        arch = archive_path.split("/")[1].split(".")
         put(archive_path, '/tmp/')
-        f_name = archive_path.split("/")[-1].split(".")[0]
-        run("mkdir -p /data/web_static/releases/{}".format(f_name))
-
-        run("tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/"
-            .format(f_name, f_name))
-
-        run('rm -rf /tmp/{}.tgz'.format(f_name))
-
-        run(('mv /data/web_static/releases/{}/web_static/* ' +
-            '/data/web_static/releases/{}/')
-            .format(f_name, f_name))
-
-        run('rm -fr /data/web_static/releases/{}/web_static'
-            .format(f_name))
-
-        run('rm -fr /data/web_static/current')
-
-        run(('ln -sf /data/web_static/releases/{}/' +
-            ' /data/web_static/current')
-            .format(f_name))
+        sudo('mkdir -p /data/web_static/releases/{}'.format(archive))
+        main_path = "/data/web_static/releases/{}".format(archive)
+        sudo('tar -xzf /tmp/{} -C {}/'.format(arch[1], main_path))
+        sudo('rm /tmp/{}'.format(arc[1]))
+        sudo('mv {}/web_static/* {}/'.format(main_path, main_path))
+        sudo('rm -rf /data/web_static/current')
+        sudo('ln -s {}/ "/data/web_static/current"'.format(main_path))
         return True
     except Exception:
         return False
