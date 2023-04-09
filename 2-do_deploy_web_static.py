@@ -24,6 +24,7 @@ def do_deploy(archive_path) -> bool:
     if not path.exists(archive_path):
         return False
     try:
+        put(archive_path, '/tmp/')
         f_name = archive_path.split("/")[-1].split(".")[0]
         run("mkdir -p /data/web_static/releases/{}".format(f_name))
 
@@ -44,7 +45,6 @@ def do_deploy(archive_path) -> bool:
         run(('ln -sf /data/web_static/releases/{}/' +
             ' /data/web_static/current')
             .format(f_name))
-        put(archive_path, '/tmp/')
         return True
     except Exception:
         return False
