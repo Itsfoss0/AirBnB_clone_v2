@@ -21,6 +21,7 @@ server {
 	}
 }	
 "
+sudo apt-get -y update && sudo apt-get -y install nginx 
 sudo mkdir -p /data/web_static/releases/test /data/web_static/shared/
 
 echo -e "$HTML_CONTENT" > /data/web_static/releases/test/index.html
