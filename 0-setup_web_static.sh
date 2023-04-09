@@ -53,7 +53,11 @@ function create_fake_html(){
 
 #creating a symlink ( if it doen't already exist)
 function create_symlink(){
-    sudo ln -sf /data/web_static/releases/test /data/web_static/current
+    if [[ -L /data/web_static/current ]]; then
+    rm /data/web_static/current
+    fi
+
+    ln -s /data/web_static/releases/test/ /data/web_static/current
 }
 
 #configure nginx
