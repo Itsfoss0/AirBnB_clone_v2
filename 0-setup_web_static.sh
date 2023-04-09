@@ -21,13 +21,14 @@ server {
 	}
 }	
 "
-#start with installing nginx( if it's not already installed)
-if ! [[ "$(which nginx)" ]]; then
-    #install nginx
-    sudo apt-get -y update
-    sudo apt-get -y install nginx
-fi
-
+function install_nginx(){
+    #start with installing nginx( if it's not already installed)
+    if ! [[ "$(which nginx)" ]]; then
+        #install nginx
+        sudo apt-get -y update
+        sudo apt-get -y install nginx
+    fi
+}
 #creating folders if they dont exist
 function create_folders(){
     if ! [[ -d "/data/web_static/releases/test/" ]]; then
@@ -64,7 +65,7 @@ function restart_nginx() {
         sudo service nginx start
     fi
 }
-
+install_nginx;
 create_folders;
 create_fake_html;
 create_symlink;
