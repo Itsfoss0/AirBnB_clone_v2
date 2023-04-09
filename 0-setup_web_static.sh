@@ -31,6 +31,6 @@ sudo ln -sf /data/web_static/releases/test /data/web_static/current
 
 sudo chown -R ubuntu:ubuntu /data/
 
-echo -e "$NGINX_CONFIG" > /etc/nginx/sites-available/default
+echo -e "$NGINX_CONFIG" > /etc/nginx/sites-enabled/default
 
 sudo service nginx restart
