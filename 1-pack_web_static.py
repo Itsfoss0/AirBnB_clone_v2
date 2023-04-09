@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
 Compress the files in web_static to create
 an archive, for deployment
