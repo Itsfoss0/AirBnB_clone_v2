@@ -11,29 +11,30 @@ HTML_CONTENT=\
     </body>
 </html>
 "
-NGINX_CONFIG=\
-"
-server {
- 	listen	80;
-	location /hbnb_static/ {
-		 alias /data/web_static/current/;
-		 index index.html;
-	}
-}	
-"
+# install nginx if not present
 if ! [[ "$(which nginx)" ]]; then
-    sudo apt-get -y update && sudo apt-get -y install nginx
+	sudo apt-get update -y  && \
+	     sudo apt-get install -y nginx
 fi
 
+
+
+# Create directories...
 sudo mkdir -p /data/web_static/releases/test /data/web_static/shared/
 
-echo -e "$HTML_CONTENT" > /data/web_static/releases/test/index.html
+# setup some fake content
+echo -e "$HTML_CONTENT" > data/web_static/releases/test/index.html
 
-# create sym link, if it already exists, replace it.
+# create sym link
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
 
+# changing ownership of the /data/ dir to
 sudo chown -R ubuntu:ubuntu /data/
 
-echo -e "$NGINX_CONFIG" > /etc/nginx/sites-enabled/default
+# backup default server config file
+sudo cp /etc/nginx/sites-enabled/default /etc/nginx/conf.d/backup.bck
+
+
+sudo sed -i '37i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 
 sudo service nginx restart
