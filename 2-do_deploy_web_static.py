@@ -21,31 +21,30 @@ def do_deploy(archive_path) -> bool:
         True ( if all goes well)
         False (if something is not right)
     """
+    if not path.exists(archive_path):
+        return False
     try:
-        if not path.exists(archive_path):
-            return False
-        else:
-            f_name = archive_path.split("/")[-1].split(".")[0]
-            run("mkdir -p /data/web_static/releases/{}".format(f_name))
+        f_name = archive_path.split("/")[-1].split(".")[0]
+        run("mkdir -p /data/web_static/releases/{}".format(f_name))
 
-            run("tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/"
-                .format(f_name, f_name))
+        run("tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/"
+            .format(f_name, f_name))
 
-            run('rm -rf /tmp/{}.tgz'.format(f_name))
+        run('rm -rf /tmp/{}.tgz'.format(f_name))
 
-            run(('mv /data/web_static/releases/{}/web_static/* ' +
-                '/data/web_static/releases/{}/')
-                .format(f_name, f_name))
+        run(('mv /data/web_static/releases/{}/web_static/* ' +
+            '/data/web_static/releases/{}/')
+            .format(f_name, f_name))
 
-            run('rm -fr /data/web_static/releases/{}/web_static'
-                .format(f_name))
+        run('rm -fr /data/web_static/releases/{}/web_static'
+            .format(f_name))
 
-            run('rm -fr /data/web_static/current')
+        run('rm -fr /data/web_static/current')
 
-            run(('ln -sf /data/web_static/releases/{}/' +
-                ' /data/web_static/current')
-                .format(f_name))
-            put(archive_path, '/tmp/')
-            return True
+        run(('ln -sf /data/web_static/releases/{}/' +
+            ' /data/web_static/current')
+            .format(f_name))
+        put(archive_path, '/tmp/')
+        return True
     except Exception:
         return False
