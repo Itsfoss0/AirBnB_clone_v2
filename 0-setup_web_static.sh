@@ -14,20 +14,12 @@ HTML_CONTENT=\
 NGINX_CONFIG=\
 "
 server {
-	add_header X-Served-By \$hostname;
  	listen	80;
-
- 	root 	/var/www/html/; 
-	location / {
-  		alias	/var/www/html/;
-		index	index.nginx-debian.html; 
-	}
-	location /hbnb_static {
+	location /hbnb_static/ {
 		 alias /data/web_static/current/;
 		 index index.html;
 	}
 }	
-
 "
 #start with installing nginx( if it's not already installed)
 if ! [[ "$(which nginx)" ]]; then
