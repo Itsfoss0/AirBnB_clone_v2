@@ -33,4 +33,4 @@ sudo chown -R ubuntu:ubuntu /data/
 
 echo -e "$NGINX_CONFIG" > /etc/nginx/sites-available/default
 
-sudo nginx -s reload
+sudo service nginx restart
