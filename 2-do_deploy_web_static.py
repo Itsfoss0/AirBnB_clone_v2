@@ -25,17 +25,16 @@ def do_deploy(archive_path) -> bool:
     if not path.exists(archive_path):
         return False
     try:
-        
-        archive = archive_path.split("/")[1].strip(".tgz")
-        arch = archive_path.split("/")[1].split(".")
+        arc = archive_path.split("/")
+        base_loc = arc[1].strip('.tgz')
         put(archive_path, '/tmp/')
-        sudo('mkdir -p /data/web_static/releases/{}'.format(archive))
-        main_path = "/data/web_static/releases/{}".format(archive)
-        sudo('tar -xzf /tmp/{} -C {}/'.format(arch[1], main_path))
+        sudo('mkdir -p /data/web_static/releases/{}'.format(base_loc))
+        main_loc = "/data/web_static/releases/{}".format(base_loc)
+        sudo('tar -xzf /tmp/{} -C {}/'.format(arc[1], main_loc))
         sudo('rm /tmp/{}'.format(arc[1]))
-        sudo('mv {}/web_static/* {}/'.format(main_path, main_path))
+        sudo('mv {}/web_static/* {}/'.format(main_loc, main_loc))
         sudo('rm -rf /data/web_static/current')
-        sudo('ln -s {}/ "/data/web_static/current"'.format(main_path))
+        sudo('ln -s {}/ "/data/web_static/current"'.format(main_loc))
         return True
     except Exception:
         return False
