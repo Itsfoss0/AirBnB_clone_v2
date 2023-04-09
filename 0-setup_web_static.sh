@@ -21,24 +21,15 @@ server {
 	}
 }	
 "
-if ! [[ "$(which nginx)" ]]; then
-    sudo apt-get -y update
-    sudo apt-get install nginx
-fi
-
-if ! [[ -d /data/web_static/releases/test/ ]]; then
-    sudo mkdir -p /data/web_static/releases/test/
-fi
-sudo chown -R ubuntu:ubuntu /data/
+sudo mkdir -p /data/web_static/releases/test /data/web_static/shared/
 
 echo -e "$HTML_CONTENT" > /data/web_static/releases/test/index.html
 
-if [ -L /data/web_static/current ]; then
-    rm /data/web_static/current
-fi
+# create sym link, if it already exists, replace it.
+sudo ln -sf /data/web_static/releases/test /data/web_static/current
 
-ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo chown -R ubuntu:ubuntu /data/
 
-echo -e "$NGINX_CONFIG" > /etc/nginx/sites-enabled/default
+echo -e "$NGINX_CONFIG" > /etc/nginx/sites-available/default
 
 sudo service nginx restart
