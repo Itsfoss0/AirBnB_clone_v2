@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Simple flask server with only one end point
+Simple flask server with only one end point /
 """
 
 from flask import Flask
@@ -16,4 +16,4 @@ def hello_holberton():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=5000)
