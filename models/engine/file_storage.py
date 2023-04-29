@@ -27,8 +27,9 @@ class FileStorage:
             json.dump(temp, f)
 
     def delete(self, obj=None):
-        if obj in __objects.keys() and obj is not None:
-            del __objects[obj]
+        """Delete an object from the storage"""
+        if obj in FileStorage.__objects.keys() and obj is not None:
+            del FileStorage.__objects[obj]
 
     def reload(self):
         """Loads storage dictionary from file"""
